@@ -24,7 +24,7 @@ export default class LoginPage extends BasePage {
     await this.fill(this.passwordInput, password);
     await this.click(this.loginButton);
 
-    await this.waitForTimeout(3000);
+    await this.waitForSelector('.lucide-user');
     expect(this.signUpButton).not.toBeVisible();
   }
 }

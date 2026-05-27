@@ -35,4 +35,8 @@ export default class BasePage {
   async waitForURL(path = "") {
     await this.page.waitForURL(path);
   }
+
+  async waitForSelector(selector: string) {
+    await this.page.waitForSelector(selector);
+  }
 }
