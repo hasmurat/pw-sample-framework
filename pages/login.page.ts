@@ -10,13 +10,15 @@ export default class LoginPage extends BasePage {
   private passwordInput: Locator;
   private loginButton: Locator;
   private signUpButton: Locator;
+  private loginSuccessMessage: Locator;
 
   constructor(page: Page) {
     super(page);
     this.emailInput = page.getByRole("textbox", { name: "Email" });
     this.passwordInput = page.getByRole("textbox", { name: "Password" });
-    this.loginButton = page.getByTestId('login-submit-button');
+    this.loginButton = page.getByTestId("login-submit-button");
     this.signUpButton = page.getByRole("button", { name: "Sign Up" });
+    this.loginSuccessMessage = page.getByText("Login Successful").first();
   }
 
   async login(email: string, password: string) {
@@ -24,7 +26,7 @@ export default class LoginPage extends BasePage {
     await this.fill(this.passwordInput, password);
     await this.click(this.loginButton);
 
-    await this.waitForSelector('.lucide-user');
-    expect(this.signUpButton).not.toBeVisible();
+    await expect(this.loginSuccessMessage).toBeVisible(); // Assert that login success message is visible
+    await expect(this.signUpButton).not.toBeVisible(); // Assert that Sign Up button is not visible after login
   }
 }

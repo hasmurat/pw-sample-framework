@@ -16,7 +16,21 @@ export default class BasePage {
     await this.page.goto(path);
   }
 
-  /// Click on an element
+  async navigateToPage(pageName: "Home" | "Shop" | "Contact") {
+    await this.page.getByRole("link", { name: pageName }).click();
+
+    const pageTextByName = {
+      Home: "Valentino's Magic Beans",
+      Shop: "Our Coffee Collection",
+      Contact: "Contact Us & Track Your Order",
+    } as const;
+
+    await expect(
+      this.page.getByText(pageTextByName[pageName], { exact: true }),
+    ).toBeVisible();
+  }
+
+  // Click on an element
   async click(locator: Locator) {
     await locator.click();
   }
@@ -39,4 +53,19 @@ export default class BasePage {
   async waitForSelector(selector: string) {
     await this.page.waitForSelector(selector);
   }
+
+  async getText(locator: Locator) {
+    return await locator.textContent();
+  }
+
+  async clickProfileIcon() {
+    await this.page.getByRole("button").nth(1).click();
+  }
+
+  async logout() {
+    this.clickProfileIcon();
+    await this.page.getByRole("menuitem", { name: "Log out" }).click();
+    await this.waitForSelector('[data-test-id="header-login-button-desktop"]'); // Wait for Login button to appear after logout
+  }
+
 }
