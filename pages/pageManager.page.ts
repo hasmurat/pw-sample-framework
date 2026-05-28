@@ -4,6 +4,7 @@ import ProductsPage from './products.page';
 import CartPage from './cart.page';
 import CheckoutPage from './checkout.page';
 import ContactPage from './contact.page';
+import SignupPage from './signup.page';
 
 /**
  * Description: PageManager class that manages all page objects and provides access to them.
@@ -16,6 +17,7 @@ export default class PageManager {
     private readonly cartPage: CartPage;
     private readonly checkoutPage: CheckoutPage;
     private readonly contactPage: ContactPage;
+    private readonly signupPage: SignupPage;
 
     constructor(page: Page) {
         this.page = page;
@@ -24,6 +26,7 @@ export default class PageManager {
         this.cartPage = new CartPage(this.page);
         this.checkoutPage = new CheckoutPage(this.page);
         this.contactPage = new ContactPage(this.page);
+        this.signupPage = new SignupPage(this.page);
     }
 
     getLoginPage() {
@@ -41,8 +44,13 @@ export default class PageManager {
     getCheckoutPage() {
         return this.checkoutPage;
     }
+    
     getContactPage() {
         return this.contactPage;
+    }
+
+    getSignupPage() {
+        return this.signupPage;
     }
 
 }
