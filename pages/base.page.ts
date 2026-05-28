@@ -11,14 +11,19 @@ export default class BasePage {
     this.page = page;
   }
 
+  getPage(): Page {
+    return this.page;
+  }
+
   // Navigate to a specific path
   async navigateTo(path = "") {
     await this.page.goto(path);
   }
 
   async navigateToPage(pageName: "Home" | "Shop" | "Contact") {
-    await this.page.getByRole("link", { name: pageName }).click();
-
+    await this.page.goto('/');
+    await this.page.getByRole("navigation").getByRole("link", { name: pageName }).click();
+    
     const pageTextByName = {
       Home: "Valentino's Magic Beans",
       Shop: "Our Coffee Collection",

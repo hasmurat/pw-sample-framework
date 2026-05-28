@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import LoginPage from './login.page';
+import ProductsPage from './products.page';
 
 /**
  * Description: PageManager class that manages all page objects and provides access to them.
@@ -8,14 +9,20 @@ import LoginPage from './login.page';
 export default class PageManager {
     private readonly page: Page;
     private readonly loginPage: LoginPage;
+    private readonly productsPage: ProductsPage;
 
     constructor(page: Page) {
         this.page = page;
         this.loginPage = new LoginPage(this.page);
+        this.productsPage = new ProductsPage(this.page);
     }
 
     getLoginPage() {
         return this.loginPage;
+    }
+
+    getProductsPage() {
+        return this.productsPage;
     }
 
 }
