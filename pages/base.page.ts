@@ -55,10 +55,12 @@ export default class BasePage {
     await this.page.waitForURL(path);
   }
 
+  // Wait for a specific selector
   async waitForSelector(selector: string) {
     await this.page.waitForSelector(selector);
   }
 
+  // Get text content of an element
   async getText(locator: Locator) {
     return await locator.textContent();
   }
