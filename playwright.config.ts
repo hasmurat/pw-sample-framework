@@ -1,8 +1,24 @@
 import { defineConfig, devices } from "@playwright/test";
 import type { TestOptions } from "./testOptions";
 import dotenv from "dotenv";
+import fs from "fs";
 import path from "path";
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+
+const environment = process.env.ENVIRONMENT ?? process.env.PW_ENV ?? "local";
+const envFile =
+  environment === "local"
+    ? ".env"
+    : `.env.${environment.toLowerCase()}`;
+const envFilePath = path.resolve(__dirname, envFile);
+
+if (fs.existsSync(envFilePath)) {
+  dotenv.config({ path: envFilePath });
+} else {
+  dotenv.config({ path: path.resolve(__dirname, ".env") });
+}
+
+const baseURL = process.env.BASE_URL ?? "https://valentinos-magic-beans.click/";
+const apiURL = process.env.API_URL ?? "";
 
 export default defineConfig<TestOptions>({
   testDir: "./tests",
@@ -17,8 +33,8 @@ export default defineConfig<TestOptions>({
   ],
 
   use: {
-    baseURL: "https://valentinos-magic-beans.click/",
-    apiURL: "",
+    baseURL,
+    apiURL,
     testIdAttribute: "data-test-id",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
