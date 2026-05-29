@@ -1,0 +1,18 @@
+## Type of Change
+
+- [ ] **Sanity**: Improve repository sanity
+- [ ] **Chore**: Light refactoring, code smell fixes, etc...
+- [ ] **Test Coverage**: Improve project test coverage
+- [ ] **Dependencies**: Update project dependencies
+
+## Description
+
+JIRA ticket: <num>
+
+Summary of changes:
+
+<!-- Please add a detailed description of what this PR does and why it is needed -->
+
+Screenshots:
+
+<!-- UI changes screenshots -->

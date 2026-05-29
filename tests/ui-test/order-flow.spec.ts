@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
-import { test } from "../testOptions";
-import { getTestData } from "../utils/dataLoader";
+import { test } from "../../testOptions";
+import { getTestData } from "../../utils/dataLoader";
 
 const checkOutData = getTestData("checkOutData");
 

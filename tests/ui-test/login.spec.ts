@@ -1,4 +1,4 @@
-import { test } from "../testOptions";
+import { test } from "../../testOptions";
 
 test.use({ storageState: { cookies: [], origins: [] } });
 

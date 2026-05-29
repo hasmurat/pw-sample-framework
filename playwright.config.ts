@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 
+/**
+ * I assumed that there are 4 environments: local, staging, preprod and prod
+ * Each environment has its own .env file on local machine
+ * On CI, the environment is set via Github Environments/Secrets and the corresponding .env file is used
+ */
 const environment = process.env.ENVIRONMENT ?? process.env.PW_ENV ?? "local";
 const envFile =
   environment === "local"

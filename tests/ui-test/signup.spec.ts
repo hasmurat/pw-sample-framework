@@ -1,6 +1,6 @@
-import { test } from "../testOptions";
-import { getTestData } from "../utils/dataLoader";
-import * as emailUtils from "../utils/emailUtils";
+import { test } from "../../testOptions";
+import { getTestData } from "../../utils/dataLoader";
+import * as emailUtils from "../../utils/emailUtils";
 
 test.use({ storageState: { cookies: [], origins: [] } });
 const signupData = getTestData("signupData");
