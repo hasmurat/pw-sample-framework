@@ -6,11 +6,14 @@ import PageManager from './pages/pageManager.page';
  */
 export type TestOptions = {
     pageManager: PageManager;
+    apiURL: string;
 }
 
 export const test = base.extend<TestOptions>({
     pageManager: async ({ page }, use) => {
         const pageManager = new PageManager(page);
         await use(pageManager);
-    }
+    },
+
+    apiURL: ['', {option: true}],
 });

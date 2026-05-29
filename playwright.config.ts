@@ -1,18 +1,24 @@
 import { defineConfig, devices } from "@playwright/test";
-
+import type { TestOptions } from "./testOptions";
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-export default defineConfig({
+export default defineConfig<TestOptions>({
   testDir: "./tests",
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  reporter: [
+    ["html"],
+    ['json', { outputFile: "playwright-report/test-results.json" }],
+    ['junit', { outputFile: "playwright-report/test-results.xml" }],
+    ["allure-playwright"],
+  ],
 
   use: {
     baseURL: "https://valentinos-magic-beans.click/",
+    apiURL: "",
     testIdAttribute: "data-test-id",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

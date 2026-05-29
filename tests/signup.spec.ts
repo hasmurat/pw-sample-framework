@@ -8,7 +8,7 @@ const testSignUp = process.env.SIGN_UP_FLOW // I used trial account of mailslurp
 
 test("As a user, I should be able to sign up successfully and receive a confirmation email", async ({pageManager}) => {
 
-  test.skip(testSignUp !== 'true', 'Skipping sign up test');
+  test.skip(testSignUp !== 'true', 'Signup flow is skipped');
 
   await pageManager.getSignupPage().navigateTo("signup");
   await pageManager.getSignupPage().fillSignupForm(
