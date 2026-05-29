@@ -15,7 +15,7 @@ concurrency:
 jobs:
   run-tests:
     name: Run tests on staging
-    uses: ./.github/workflows/manual-test.yml
+    uses: ./.github/workflows/manual-trigger.yml
     with:
       environment: staging
     secrets: inherit
