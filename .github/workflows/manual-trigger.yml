@@ -1,32 +1,64 @@
+# Reusable Workflow: Manual Test Trigger
+#
+# Purpose: Execute Playwright tests against a specified environment
+#
+# Triggers:
+# 1. Manual dispatch via GitHub UI (workflow_dispatch)
+# 2. Called by other workflows (workflow_call)
+#
+# Environments supported: staging, preprod, prod
+#
+# Usage (Manual):
+#   - Go to Actions tab
+#   - Select "Run tests with custom configuration"
+#   - Click "Run workflow"
+#   - Choose environment
+#   - Click "Run workflow"
+#
+# Usage (CLI):
+#   gh workflow run manual-trigger.yml -f environment=staging
+#
+# Usage (Called by another workflow):
+#   uses: ./.github/workflows/manual-trigger.yml
+#   with:
+#     environment: staging
+#   secrets: inherit
+
 name: Run tests with custom configuration
 
 on:
+  # Manual trigger via GitHub UI
   workflow_dispatch:
     inputs:
       environment:
-        description: Target environment
+        description: Target environment to run tests against
         required: true
         type: choice
         options:
-          - staging
-          - preprod
-          - prod
+          - staging     # Staging environment
+          - preprod     # Pre-production environment
+          - prod        # Production environment
         default: staging
+
+  # Reusable workflow - can be called by other workflows
   workflow_call:
     inputs:
       environment:
-        description: Target environment
+        description: Target environment to run tests against
         required: true
         type: string
     secrets:
+      # Test credentials
       EMAIL_ADDRESS:
         required: true
       PASSWORD:
         required: true
+      # Email verification service (MailSlurp)
       MAILSLURP_API_KEY:
         required: true
       MAILSLURP_INBOX_ID:
         required: true
+      # Application configuration
       SIGN_UP_FLOW:
         required: true
       BASE_URL:
