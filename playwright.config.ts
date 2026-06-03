@@ -23,7 +23,7 @@ if (fs.existsSync(envFilePath)) {
 }
 
 const baseURL = process.env.BASE_URL ?? "https://valentinos-magic-beans.click/";
-const apiURL = process.env.API_URL ?? "";
+const apiURL = process.env.API_URL ?? "https://practice.expandtesting.com/notes/api/";
 
 export default defineConfig<TestOptions>({
   testDir: "./tests",
