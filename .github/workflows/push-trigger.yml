@@ -1,21 +1,64 @@
+# Event-Triggered Workflow: Automatic Tests on Push & Pull Request
+#
+# Purpose: Automatically run tests when code is pushed or a pull request is created
+#
+# Trigger Events:
+# 1. Push to any branch (branches: "**")
+# 2. Pull request to any branch (branches: "**")
+#
+# Key Features:
+# - Runs only on latest commit (concurrency control)
+# - Cancels previous runs to save resources
+# - Always uses staging environment for fast feedback
+# - Inherits secrets from GitHub Environments
+#
+# Flow:
+#   Developer pushes code
+#   ↓
+#   GitHub detects push event
+#   ↓
+#   Workflow triggers (push-trigger.yml)
+#   ↓
+#   Calls manual-trigger.yml with environment=staging
+#   ↓
+#   Tests run in staging environment
+#   ↓
+#   Reports available in Actions tab
+#
+# Concurrency Behavior:
+# - If developer pushes multiple times quickly:
+#   - Previous run is cancelled
+#   - Only latest run executes
+#   - Prevents wasted CI resources
+
 name: Test Automation Workflow on push and pull request
 
 on:
+  # Trigger on push to any branch
   push:
     branches:
-      - "**"
+      - "**"  # All branches
+
+  # Trigger on pull request to any branch
   pull_request:
     branches:
-      - "**"
+      - "**"  # All branches
 
+# Concurrency Control:
+# - group: Per-branch concurrency (prevents parallel runs on same branch)
+# - cancel-in-progress: Cancel previous run when new push detected
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # Job: Run tests in staging environment
   run-tests:
     name: Run tests on staging
+    # Call the reusable workflow
     uses: ./.github/workflows/manual-trigger.yml
     with:
+      # Always use staging for automatic runs
       environment: staging
+    # Inherit all secrets from GitHub (MAILSLURP_API_KEY, etc.)
     secrets: inherit
