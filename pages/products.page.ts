@@ -15,7 +15,7 @@ export default class ProductsPage extends BasePage {
 
     async addProductToCart(productName: string) {
         await this.productList.filter({ hasText: productName }).getByRole('button', { name: 'Add to Cart' }).click();
-        await this.getPage().getByText(`${productName} is now in your cart.`).waitFor({ state: 'visible' });
+        await this.getPage().getByText(`${productName} is now in your cart.`).first().waitFor({ state: 'visible' });
     }
 
     async getProductPrice(productName: string): Promise<string> {

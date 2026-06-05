@@ -1,5 +1,6 @@
 import { test as base, expect } from '@playwright/test';
 import PageManager from './pages/pageManager.page';
+import PayloadManager from './payloads/payloadManager.payload';
 
 /**
  * Description: This file defines custom test options and fixtures for Playwright tests.
@@ -7,6 +8,7 @@ import PageManager from './pages/pageManager.page';
 export type TestOptions = {
     pageManager: PageManager;
     apiURL: string;
+    payloadManager: PayloadManager;
 }
 
 export const test = base.extend<TestOptions>({
@@ -16,4 +18,9 @@ export const test = base.extend<TestOptions>({
     },
 
     apiURL: ['', {option: true}],
+
+    payloadManager: async ({ request }, use) => {
+        const payloadManager = new PayloadManager(request);
+        await use(payloadManager);
+    }
 });
