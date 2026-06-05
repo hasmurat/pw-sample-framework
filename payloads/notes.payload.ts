@@ -9,6 +9,9 @@ import {
 import fs from "fs";
 import path from "path";
 
+const NOTE_DIR = path.join(__dirname, "../playwright/.notes");
+const NOTE_FILE = path.join(NOTE_DIR, "notes.json");
+
 export default class NotesPayload extends BasePayload {
   constructor(request: APIRequestContext) {
     super(request);
@@ -24,6 +27,23 @@ export default class NotesPayload extends BasePayload {
       description,
       category,
     };
+  }
+
+  private saveNote(note: NoteResponse): void {
+    if (!fs.existsSync(NOTE_DIR)) {
+      fs.mkdirSync(NOTE_DIR, { recursive: true });
+    }
+
+    fs.writeFileSync(NOTE_FILE, JSON.stringify(note, null, 2), "utf-8");
+  }
+
+  loadNote(): NoteResponse {
+    if (!fs.existsSync(NOTE_FILE)) {
+      throw new Error(`Note file not found: ${NOTE_FILE}`);
+    }
+
+    const raw = fs.readFileSync(NOTE_FILE, "utf-8");
+    return JSON.parse(raw) as NoteResponse;
   }
 
   async createNote(token: string, payload: NotePayload): Promise<NoteResponse> {
@@ -49,19 +69,7 @@ export default class NotesPayload extends BasePayload {
     expect(responseBody.data).toHaveProperty("category", payload.category);
 
     // Save the note data to a JSON file for later use
-    const noteDir = path.join(__dirname, "../playwright/.user");
-
-    if (!fs.existsSync(noteDir)) {
-      fs.mkdirSync(noteDir, { recursive: true });
-    }
-
-    const notePath = path.join(noteDir, "notes.json");
-
-    fs.writeFileSync(
-      notePath,
-      JSON.stringify(responseBody.data, null, 2),
-      "utf-8",
-    );
+    this.saveNote(responseBody.data);
     return responseBody.data;
   }
 
@@ -99,7 +107,10 @@ export default class NotesPayload extends BasePayload {
     };
   }
 
-  async updateNote(token: string, payload: UpdateNotePayload): Promise<NoteResponse> {
+  async updateNote(
+    token: string,
+    payload: UpdateNotePayload,
+  ): Promise<NoteResponse> {
     const response = await this.getRequest().put(
       `${process.env.API_URL}/notes/${payload.id}`,
       {

@@ -8,23 +8,16 @@
 import { test } from "../../testOptions";
 import { expect } from "@playwright/test";
 import { createRandomNote } from "../../utils/faker";
-import fs from "fs";
-import path from "path";
-
-const userFilePath = path.join(
-  __dirname,
-  "../../playwright/.user/registeredUsers.json",
-);
-const noteFilePath = path.join(__dirname, "../../playwright/.user/notes.json");
+import { User } from "../../types/user.types";
 
 let token: string;
-let registeredUser: { email: string; password: string };
+let registeredUser: User;
 
 test.describe.serial("API tests", () => {
   test.beforeAll(async ({ payloadManager }) => {
     await payloadManager.getUserPayload().registerNewUser();
 
-    registeredUser = JSON.parse(fs.readFileSync(userFilePath, "utf-8"));
+    registeredUser = payloadManager.getUserPayload().loadRegisteredUser();
 
     token = await payloadManager
       .getUserPayload()
@@ -52,7 +45,7 @@ test.describe.serial("API tests", () => {
   test("As a user, I should be able to get specific note details", async ({
     payloadManager,
   }) => {
-    const noteData = JSON.parse(fs.readFileSync(noteFilePath, "utf-8"));
+    const noteData = payloadManager.getNotesPayload().loadNote();
     const noteId = noteData.id;
 
     const noteDetails = await payloadManager
@@ -67,7 +60,7 @@ test.describe.serial("API tests", () => {
   test("As a user, I should be able to update a note", async ({
     payloadManager,
   }) => {
-    const noteData = JSON.parse(fs.readFileSync(noteFilePath, "utf-8"));
+    const noteData = payloadManager.getNotesPayload().loadNote();
     const noteId = noteData.id;
 
     const updatedNotePayload = payloadManager
