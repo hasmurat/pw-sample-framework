@@ -4,7 +4,7 @@ import { createRandomUser } from "../utils/faker";
 import fs from "fs";
 import path from "path";
 
-export default class RegisterPayload extends BasePayload {
+export default class UserPayload extends BasePayload {
   constructor(request: APIRequestContext) {
     super(request);
   }
@@ -42,5 +42,23 @@ export default class RegisterPayload extends BasePayload {
       JSON.stringify(user, null, 2),
       "utf-8",
     );
+  }
+
+    async createToken(email: string, password: string) {
+    const response = await this.getRequest().post(
+      `${process.env.API_URL}/users/login`,
+      {
+        data: { email, password },
+      },
+    );
+
+    const responseBody = await response.json();
+    expect(response.status()).toBe(200);
+
+    expect(responseBody.success).toBe(true);
+    expect(responseBody.message).toEqual("Login successful");
+
+    expect(responseBody.data).toHaveProperty("token");
+    return responseBody.data.token;
   }
 }

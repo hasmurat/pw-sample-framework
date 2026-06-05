@@ -1,23 +1,24 @@
 import { APIRequestContext } from "@playwright/test";
-import RegisterPayload from "./register.payload";
-import LoginPayload from "./login.payload";
+import UserPayload from "./user.payload";
+import NotesPayload from "./notes.payload";
 
 export default class PayloadManager {
   private readonly request: APIRequestContext;
-  private readonly registerPayload: RegisterPayload;
-  private readonly loginPayload: LoginPayload;
+  private readonly userPayload: UserPayload;
+  private readonly notesPayload: NotesPayload;
 
   constructor(request: APIRequestContext) {
     this.request = request;
-    this.registerPayload = new RegisterPayload(this.request);
-    this.loginPayload = new LoginPayload(this.request);
+    this.userPayload = new UserPayload(this.request);
+    this.notesPayload = new NotesPayload(this.request);
   }
 
-    getRegisterPayload() {
-      return this.registerPayload;
+    getUserPayload() {
+      return this.userPayload;
     }
 
-    getLoginPayload() {
-      return this.loginPayload;
+    getNotesPayload() {
+      return this.notesPayload;
     }
+
 }

@@ -7,3 +7,10 @@ export function createRandomUser() {
     password: faker.internet.password(),
   };
 }
+
+export function createRandomNote() {
+  return {
+    title: faker.lorem.words(3),
+    description: faker.lorem.sentence(),
+  };
+}
